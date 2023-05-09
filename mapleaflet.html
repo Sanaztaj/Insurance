@@ -139,7 +139,7 @@ select {
   flex-direction: column;
 }
 
-.row-1, .row-2 {
+.row-1, .row-2 , .row-3 {
   text-align: center;
   height: 30px;
   background-color: #f7f7f7;
@@ -147,14 +147,36 @@ select {
   margin: 0 0 7px 0;
 }
 
+.item-data  {
+    margin: 0;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    padding-top: 1%;
+    font-size: 20px;
+}
+.item-data1 {
+    margin: 0;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    padding-top: 1%;
+    font-size: 20px;
+}
+.item-data2 {
+    margin: 0;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    padding-top: 1%;
+    font-size: 20px;
+}
+
+
 .col-1 {
   width: 242px;
 }
 
-.row-1 {
-  background-color: #f7f7f7;
-  border-radius: 8px;
-}
 
 .row-21 {
   height: 157px;
@@ -176,6 +198,16 @@ select {
     width: 1194px;
     height: 397px;
     margin: 70px auto 10px;
+}
+.text-data,
+.text-data1,
+.text-data2 {
+  display: flex;
+  text-align: end;
+  align-items: center;
+  justify-content: center;
+  padding-top: 8%;
+  font-size: 20px;
 }
 
 .footer {
@@ -433,19 +465,20 @@ h2 {
 <div class="containerMain">
           <div class="container">
             <div class="col-1">
-              <div class="row-1">موضوع ۱</div>
-              <div class="row-21">   
-                <table id="data-table">
-              </table>
+              <div class="row-1">
+                <p class="item-data">فاصله ۱</p>
+              </div>
+              <div class="row-21"> 
+                <span class="text-data"></span>  
             </div>
             </div>
             <div class="col-2">
-              <div class="row-1">موضوع ۲</div>
-              <div class="row-22">محتوا ۲</div>
+              <div class="row-2"> <p class="item-data1">فاصله ۲</p></div>
+              <div class="row-22"><span class="text-data1"></span></div>
             </div>
             <div class="col-3">
-              <div class="row-1">موضوع ۳</div>
-              <div class="row-23">محتوا ۳</div>
+              <div class="row-3"> <p class="item-data2">فاصله ۳</p></div>
+              <div class="row-23"> <span class="text-data2"></span></div>
             </div>
           </div>
         </div>
@@ -499,16 +532,26 @@ shpfile.addTo(map);
     </script>
         <!-- کد مربوط به تغییر سایز باکس دریافت اطلاعات -->
     <script>
+
 var cols = document.querySelectorAll(".container > div");
 
 cols.forEach(function(col) {
   col.addEventListener("click", function() {
     cols.forEach(function(col) {
       col.style.width = "103px";
+      col.querySelectorAll(".text-data, .text-data1, .text-data2").forEach(function(el) {
+        el.style.fontSize = "20px";
+      });
     });
     col.style.width = "242px";
+    col.querySelectorAll(".text-data, .text-data1, .text-data2").forEach(function(el) {
+      el.style.fontSize = "24px";
+    });
   });
 });
+
+
+
     </script>
         <!-- کد های مربوط به ارسال اطلاعات با متد fetch -->
     <script>
@@ -546,28 +589,53 @@ function sendRequest() {
   fetch("http://api.sameteo.ir/sbk/nearest/", requestOptions)
     .then(response => response.json())
     .then(data => {
-      data.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${item.loc_id}</td>
-          <td>${item.t2m}</td>
-          <td>${item.tp}</td>
-          <td>${item.dd_10m}</td>
-          <td>${item.distance}</td>
-        `;
-        tableBody.appendChild(row);
-      });
-    })
+    // استخراج داده‌های مورد نظر از ابجکت‌ها
+    var dd1 = data[0].dd_10m;
+    var dis1 = data[0].distance;
+    var loc1 = data[0].loc_id;
+    var t2m1 = data[0].t2m;
+    var tp1 = data[0].tp;
+    var dd2 = data[1].dd_10m;
+    var dis2 = data[1].distance;
+    var loc2 = data[1].loc_id;
+    var t2m2 = data[1].t2m;
+    var tp2 = data[1].tp;
+    var dd3 = data[2].dd_10m;
+    var dis3 = data[2].distance;
+    var loc3 = data[2].loc_id;
+    var t2m3 = data[2].t2m;
+    var tp3 = data[2].tp;
+document.querySelector('.item-data').innerHTML = dis1 ;
+document.querySelector('.item-data1').innerHTML = dis2 ;
+document.querySelector('.item-data2').innerHTML = dis3 ;
+
+    document.querySelector('.text-data').innerHTML = 'loc-id = ' + dd1 + '</br>' + 'dd-10m = '+ dd1 + '</br>' + 't2m = ' + t2m1 + '</br>' +'tp = ' + tp1;
+    document.querySelector('.text-data1').innerHTML = 'loc-id = ' + dd2 + '</br>' + 'dd-10m = '+ dd2 + '</br>' + 't2m = ' + t2m2 + '</br>' +'tp = ' + tp2;
+    document.querySelector('.text-data2').innerHTML =  'loc-id = ' + dd3 + '</br>' + 'dd-10m = '+ dd3 + '</br>' + 't2m = ' + t2m3 + '</br>' +'tp = ' + tp3;
+  })
     .catch(error => console.log('error', error));
 }
 
 
 
+// //  و وجود مارکر قبلی اضافه کردن مارکر
+// function addMarker(lat, lon) {
+//   L.marker([lat, lon]).addTo(map);
+//   map.flyTo([lat, lon], 8);
+// }
+
+let marker;
+
 // اضافه کردن مارکر
 function addMarker(lat, lon) {
-  L.marker([lat, lon]).addTo(map);
+  if (marker) {
+    // حذف مارکر قبلی در صورت وجود
+    marker.remove();
+  }
+  marker = L.marker([lat, lon]).addTo(map);
   map.flyTo([lat, lon], 8);
 }
+
 
 // فراخوانی تابع addMarker() و ارسال مقادیر lat و lon
 btn.addEventListener("click", function () {
